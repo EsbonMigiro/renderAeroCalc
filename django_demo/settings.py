@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
+
+
+
+CORS_ORIGIN_ALLOW_ALL_ORIGINS = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v(3fbys+0y=^naqlw#a!_m_lqtmq36c3yy=%mx2nri$uto-mu2'
+# SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY='django-insecure-v(3fbys+0y=^naqlw#a!_m_lqtmq36c3yy=%mx2nri$uto-mu2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 ALLOWED_HOSTS = []
+# ALLOWED_HOSTS =os.environ.get("ALLOWED_HOSTS").split(" ") 
 
 
 # Application definition
@@ -39,19 +46,26 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework' , 
     'core', 
-    'corsheaders'
+    'corsheaders',
+    'fileuploads',
+    'computation',
+    'aero_calc',
+    'numpy',
+    'aero',
+    'machine_tool',
+    'sympy'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+  
 ]
 
 ROOT_URLCONF = 'django_demo.urls'
@@ -84,6 +98,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse('postgres://aerodb_user:heCkNdGvDLiaPj0qto3XdrqEY5YwpL99@dpg-ckhdnbcldqrs739k3f6g-a.oregon-postgres.render.com/aerodb')
 
 
 # Password validation
@@ -137,10 +153,13 @@ REST_FRAMEWORK = {
     ],
 }
 
-CORS_ORIGIN_ALLOW_ALL_ORIGINS = True
+
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    # Add more allowed origins as needed
+    'http://localhost:3500',  # Add your frontend origin here
+    'https://aero-calc-react.vercel.app'
 ]
 
-
+# for pdf files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

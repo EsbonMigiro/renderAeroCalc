@@ -18,8 +18,22 @@ from django.contrib import admin
 from django.urls import path, include
 # from django.conf.urls import url
 from core.views import *
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('wel/', ReactView.as_view(), name="something"),
+    path('', include('fileuploads.urls')),
+    path('', include('computation.urls')),
+    path('', include('aero_calc.urls')),
+    path('', include('aero.urls')),
+    path('', include('machine_tool.urls')),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

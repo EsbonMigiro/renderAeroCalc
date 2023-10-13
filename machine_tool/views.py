@@ -42,9 +42,9 @@ def machine_tool_view(request):
     try:
         f = float(request.GET.get('frequency'))
         m = float(request.GET.get('mass'))
-        x_s = float(request.GET.get('amplitude'))
+        x_s = float(request.GET.get('amplitude')) 
         f_m = float(request.GET.get('force'))
-        print(f, m, x_s, f_m)
+        
         Df = damping_factor(f, m, x_s, f_m)
        
         Wn = natural_frequency(f, Df)
@@ -59,7 +59,7 @@ def machine_tool_view(request):
             "K": K,
             "C": C,
         }
-        print(result)
+        
         serialized_result = {
             'Df': float(result['Df']),
             'Wn': float(result['Wn']),

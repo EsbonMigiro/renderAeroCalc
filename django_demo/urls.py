@@ -31,6 +31,14 @@ urlpatterns = [
     path('', include('aero_calc.urls')),
     path('', include('aero.urls')),
     path('', include('machine_tool.urls')),
+    path('', include('solid_circular_bar.urls')),
+    path('', include('aircraft_carrier.urls')),
+    path('', include('jetcarrier.urls')),
+    path('', include('beam_stress.urls')),
+    path('', include('cantilever_beam.urls')),
+    path('', include('thin_disk.urls')),
+
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()
